@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Новость — Cheboko Coffee Cup</title>
+  <meta name="description" content="Новость чемпионата Cheboko Coffee Cup" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-title">Cheboko Coffee Cup</div>
+          <div class="brand-sub">Назад на главную</div>
+        </div>
+      </a>
+      <div class="header-actions">
+        <a class="btn btn-ghost" href="../index.html#news">Все новости</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container article">
+      <h1 id="title">Загрузка…</h1>
+      <div class="article-meta">
+        <span id="date"></span> · <span id="tag"></span>
+      </div>
+      <img class="article-hero" id="cover" alt="" hidden />
+      <div class="article-body" id="body"></div>
+      <div class="divider"></div>
+      <a class="btn btn-ghost" href="../index.html#news">← Вернуться</a>
+    </div>
+  </main>
+
+  <script>
+    async function main(){
+      const params = new URLSearchParams(location.search);
+      const slug = params.get('slug');
+      if(!slug){ document.getElementById('title').textContent='Новость не найдена'; return; }
+      const res = await fetch(`../content/news/${slug}.json`, {cache:'no-store'});
+      if(!res.ok){ document.getElementById('title').textContent='Новость не найдена'; return; }
+      const p = await res.json();
+      document.title = `${p.title} — Cheboko Coffee Cup`;
+      document.getElementById('title').textContent = p.title;
+      document.getElementById('date').textContent = p.date;
+      document.getElementById('tag').textContent = p.tag || '';
+      if(p.cover){
+        const img = document.getElementById('cover');
+        img.src = p.cover; img.hidden=false;
+        img.alt = p.title;
+      }
+      document.getElementById('body').innerHTML = (p.html || '').trim();
+    }
+    main();
+  </script>
+</body>
+</html>
