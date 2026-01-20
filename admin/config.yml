@@ -1,0 +1,166 @@
+# Decap CMS configuration (макет).
+# Вариант 1 (prod): backend: git-gateway (Netlify) или github (OAuth app).
+# Вариант 2 (локально): local_backend: true и запуск через `npx decap-server`.
+
+local_backend: true
+
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "settings"
+    label: "Настройки"
+    files:
+      - name: "main"
+        label: "Главные настройки"
+        file: "content/settings.json"
+        format: "json"
+        fields:
+          - label: "Организатор"
+            name: "organizer"
+            widget: "object"
+            fields:
+              - {label: "Название", name: "name", widget: "string"}
+              - {label: "Коротко", name: "short", widget: "string"}
+              - {label: "Теглайн", name: "tagline", widget: "string"}
+              - {label: "Юр. название", name: "legal", widget: "string"}
+              - {label: "Контакты", name: "contacts", widget: "string"}
+          - label: "Соцсети"
+            name: "social"
+            widget: "object"
+            fields:
+              - {label: "VK", name: "vk", widget: "string"}
+              - {label: "Telegram", name: "tg", widget: "string"}
+          - label: "Ссылки"
+            name: "links"
+            widget: "object"
+            fields:
+              - {label: "Политика ПДн", name: "pd", widget: "string"}
+              - {label: "Условия", name: "terms", widget: "string"}
+          - label: "Событие"
+            name: "event"
+            widget: "object"
+            fields:
+              - {label: "Кикер", name: "kicker", widget: "string"}
+              - {label: "Название", name: "name", widget: "string"}
+              - {label: "Год", name: "year", widget: "string"}
+              - {label: "Описание", name: "description", widget: "text"}
+              - {label: "Приглашение", name: "inviteLine", widget: "string"}
+              - {label: "Дата", name: "date", widget: "string"}
+              - {label: "Время", name: "time", widget: "string"}
+              - {label: "Адрес", name: "address", widget: "string"}
+              - {label: "Город", name: "city", widget: "string"}
+              - {label: "Статус", name: "status", widget: "string"}
+          - label: "Заявка"
+            name: "apply"
+            widget: "object"
+            fields:
+              - {label: "Основная ссылка (Google‑форма)", name: "primaryUrl", widget: "string"}
+              - {label: "Ссылка на Telegram‑бота", name: "tgUrl", widget: "string"}
+          - label: "Правила"
+            name: "rules"
+            widget: "list"
+            fields:
+              - {label: "Заголовок", name: "title", widget: "string"}
+              - {label: "Описание", name: "desc", widget: "string"}
+              - {label: "Ссылка (Я.Диск)", name: "url", widget: "string"}
+
+  - name: "news_index"
+    label: "Новости (список)"
+    files:
+      - name: "index"
+        label: "Лента новостей"
+        file: "content/news/index.json"
+        format: "json"
+        fields:
+          - label: "Новости"
+            name: "items"
+            widget: "list"
+            fields:
+              - {label: "Slug", name: "slug", widget: "string"}
+              - {label: "Заголовок", name: "title", widget: "string"}
+              - {label: "Дата", name: "date", widget: "string"}
+              - {label: "Тег", name: "tag", widget: "string", required: false}
+              - {label: "Кратко", name: "excerpt", widget: "string"}
+              - {label: "Обложка", name: "cover", widget: "image", required: false}
+
+  - name: "news"
+    label: "Новости (страницы)"
+    folder: "content/news"
+    extension: "json"
+    format: "json"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Заголовок", name: "title", widget: "string"}
+      - {label: "Дата", name: "date", widget: "string"}
+      - {label: "Тег", name: "tag", widget: "string", required: false}
+      - {label: "Обложка", name: "cover", widget: "image", required: false}
+      - {label: "HTML контент", name: "html", widget: "text"}
+
+  - name: "winners"
+    label: "Победители"
+    files:
+      - name: "winners"
+        label: "Список победителей"
+        file: "content/winners.json"
+        format: "json"
+        fields:
+          - label: "Победители"
+            name: "items"
+            widget: "list"
+            fields:
+              - {label: "Год", name: "year", widget: "string"}
+              - {label: "Название/Команда", name: "name", widget: "string"}
+              - {label: "Город", name: "city", widget: "string", required: false}
+              - {label: "Фото", name: "photo", widget: "image"}
+              - label: "Состав"
+                name: "team"
+                widget: "list"
+                field: {label: "Участник", name: "member", widget: "string"}
+
+  - name: "gallery"
+    label: "Галерея"
+    files:
+      - name: "gallery"
+        label: "Фото по годам"
+        file: "content/gallery.json"
+        format: "json"
+        fields:
+          - label: "Метаданные"
+            name: "_meta"
+            widget: "object"
+            fields:
+              - {label: "Год по умолчанию", name: "defaultYear", widget: "string"}
+          - label: "2024"
+            name: "2024"
+            widget: "object"
+            fields:
+              - {label: "Название альбома", name: "title", widget: "string", required: false}
+              - {label: "Фото", name: "photos", widget: "list", field: {label: "Фото", name: "photo", widget: "image"} }
+          - label: "2023"
+            name: "2023"
+            widget: "object"
+            fields:
+              - {label: "Название альбома", name: "title", widget: "string", required: false}
+              - {label: "Фото", name: "photos", widget: "list", field: {label: "Фото", name: "photo", widget: "image"} }
+
+  - name: "sponsors"
+    label: "Спонсоры"
+    files:
+      - name: "sponsors"
+        label: "Список спонсоров"
+        file: "content/sponsors.json"
+        format: "json"
+        fields:
+          - label: "Спонсоры"
+            name: "items"
+            widget: "list"
+            fields:
+              - {label: "Название", name: "name", widget: "string"}
+              - {label: "Логотип", name: "logo", widget: "image"}
+              - {label: "Ссылка", name: "url", widget: "string", required: false}
