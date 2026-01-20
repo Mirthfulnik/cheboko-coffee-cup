@@ -1,0 +1,8 @@
+{
+  "items": [
+    {"name":"Sponsor A","logo":"assets/sponsors/a.png","url":"https://example.com"},
+    {"name":"Sponsor B","logo":"assets/sponsors/b.png","url":"https://example.com"},
+    {"name":"Sponsor C","logo":"assets/sponsors/c.png","url":"https://example.com"},
+    {"name":"Sponsor D","logo":"assets/sponsors/d.png","url":"https://example.com"}
+  ]
+}
